@@ -141,7 +141,6 @@ class C3dModifiedPersJointFrameDim(nn.Module):
         c3d_conv_param = dict(kernel_size=(3, 2, 2), padding=(1, 1, 1), conv_cfg=conv_cfg, norm_cfg=norm_cfg, act_cfg=act_cfg)
 
         self.conv1a = ConvModule(self.in_channels, self.base_channels, **c3d_conv_param)
-        #print(self.conv1a.weight.dtype)
         self.pool1 = nn.AvgPool3d(kernel_size=(3, 2, 2), stride=(2, 2, 1))
 
         self.conv2a = ConvModule(self.base_channels, self.base_channels * 2, **c3d_conv_param)

@@ -40,9 +40,10 @@ train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
 val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=True)
 
 
-# Train model
+# Summary of the model
 summary(model, input_size=input_size)
 
+#Train model
 TestModelDlav = Model(model)
 start = time.perf_counter()
 TestModelDlav.training(train_loader, val_loader, num_epochs, model_savepath)

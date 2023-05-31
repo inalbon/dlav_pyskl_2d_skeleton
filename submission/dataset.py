@@ -37,7 +37,6 @@ class NTU60_HRNET(Dataset):
         self.data_size = (nb_samples, )
       else:
         self.data_size = np.shape(self.raw_data["split"][self.phase_dict[self.phase]])
-      print(self.data_size)
       self.skeletons, self.labels, self.names = self.collect_data()
     
 
@@ -62,23 +61,16 @@ class NTU60_HRNET(Dataset):
         skeletons[i, :num_pers] = self.raw_data['annotations'][ind]['keypoint'][:, frames_indices]
         labels[i] = self.raw_data['annotations'][ind]['label']
         names.append(self.raw_data["split"][self.phase_dict[self.phase]][i])
-      # fig, ax = plt.subplots()
-      # ax.plot(list_total_frames)
-      # plt.show()
+      
 
-      print('indice of problematic case', np.argmin(skeletons[:, :, :, :, 0]), np.argmax(skeletons[:, :, :, :, 0]), np.argmin(skeletons[:, :, :, :, 1]), np.argmax(skeletons[:, :, :, :, 1]))
-      print(skeletons[:, : , :, :, 0].shape)
+      
       # Normalization
       height, width = self.raw_data['annotations'][ind]['img_shape']
       skeletons[:, :, :, :, 0] = skeletons[:, :, :, :, 0]/width
       skeletons[:, :, :, :, 1] = skeletons[:, :, :, :, 1]/height
-      print('check', np.min(skeletons[:, :, :, :, 0]), np.max(skeletons[:, :, :, :, 0]), np.min(skeletons[:, :, :, :, 1]), np.max(skeletons[:, :, :, :, 1]))
-      skeletons = torch.from_numpy(skeletons)
-      print('before', skeletons.size())  
+      skeletons = torch.from_numpy(skeletons) 
       skeletons = torch.permute(skeletons, self.permute_order).to(self.device)
-      print('after', skeletons.size())  
       labels = torch.from_numpy(labels)
-      #if self.phase == 'train':
       labels = labels.to(self.device)
 
       return skeletons, labels, names

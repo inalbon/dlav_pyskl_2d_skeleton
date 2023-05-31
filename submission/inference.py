@@ -44,9 +44,9 @@ start = time.perf_counter()
 acc, full_outputs, full_labels, loss, full_names = TestModelDlav.predict(test_loader)
 stop = time.perf_counter()
 print(f'The prediction is done in {stop - start} seconds for {len(test_dataset)} predictions.')
-
 print(f"testing metrics : accuracy = {acc}  loss = {loss}")
 
+# Loop to select a video that is present in ntu_samples
 find_flag = False
 for f in os.listdir(video_path):
   videoname = f.split('.')[0].split('_')[0]
@@ -60,4 +60,5 @@ for f in os.listdir(video_path):
   if find_flag:
     break
 
+# Print results and skeletons on video
 TestModelDlav.show_prediction(test_dataset.skeletons[idx].cpu().numpy(), full_outputs[idx], full_labels[idx], full_names[idx], test_dataset.label_dict, permute_order, model_savepath, video_path)
