@@ -14,14 +14,14 @@ Our idea is to get rid of the heatmap to optimize the computation costs. Instead
 We coded a data loader in the file dataset.py to load the 2D-skeleton (NTU60 HRNET). In train.py, we load the data, we instantiate and train our model. In inference.py, we predict the data using our best model. We coded functions to display the skeletons on the original video if provided, otherwise we display the skeletons on a black background. The five more probable predictions as well as the true value are plotted on the video. The two models we implemented are in the file c3d_modified.py. The file model.py contains the functions to train the model, evaluate the performance of the model with different metrics, and to do the prediction.
 
 ## Experimental Setup
-Here we will present the experiments we conducted and the evaluation metrics we use to quatify the results.
+Here we will present the experiments we conducted and the evaluation metrics we use to quantify the results.
 ### Experiments
 First we run the model of the paper with the heatmaps in SCITAS. We obtained these metrics. 
 - Top-1 accuracy: 0.9253
 - Top-5 accuracy: 0.9944
 - Mean class accuracy: 0.9252
 
-Then we adapted the neural network architecture to feed the network with 2D skeletons keypoints instead of heatmaps. We tried different input shape. We adapted the the stride, kernel size, and padding of 3D-conv and avg pool in consequence.
+Then we adapted the neural network architecture to feed the network with 2D skeletons keypoints instead of heatmaps. We tried different input shape. We adapted the stride, kernel size, and padding of 3D-conv and avg pool in consequence.
 - (batch_size, #joints, #frames, #persons, #dimensions)
 - (batch_size, #persons, #joints, #frames, #dimensions)
 
@@ -85,7 +85,7 @@ It is not relevant to show the other metrics we obtained with the model since it
 
 ## Conclusion
 
-In light of results we got with the network and particularly with sanity check of it, we can say that the network is not learning anything from the data. In order to tell if this is due to the network or to the nature of the data, we would have to check another architecture of network with the same input. What we also wanted to check was the sanity of the network when we input into it less data. To do that, we though about reducing the dimension represented by the number of joints to only one by creating the heatmap with only one layer with all the joints put on it. We began to do that at the end of the project but didn't had time to had results. 
+In light of results we got with the network and particularly with sanity check of it, we can say that the network is not learning anything from the data. In order to tell if this is due to the network or to the nature of the data, we would have to check another architecture of network with the same input. What we also wanted to check was the sanity of the network when we input into it less data. To do that, we though about reducing the dimension represented by the number of joints to only one by creating the heatmap with only one layer with all the joints put on it. We began to do that at the end of the project but didn't had time to compute results. 
 
 ## Installation
 ```shell
