@@ -7,28 +7,45 @@ For this project, we started from the code of the paper Revisiting Skeleton-base
 </div>
 
 ## Contribution
-The method developed in the paper of Duan et al. achieves state-of-the-art results. However, it is computationally heavy as we experienced when training their model in scitas. Indeed, since they use heatmaps, instead of skeleton keypoints, they have an input shape of (batch_size, #joints, #frames, height, width).
+The method developed in the paper of Duan et al. achieves state-of-the-art results. However, it is computationally heavy as we experienced when training their model in SCITAS. Indeed, since they use heatmaps, instead of skeleton keypoints, they have an input shape of (batch_size, #joints, #frames, height, width).
 
-Our idea is to get rid of the heatmap to optimize the computation costs. Instead we use the 2D skeleton data as they are without any modifications to do the classification. This gives an input shape of (batch_size, #persons, #joints, #frames, #dimensions), #dimensions is 2 for 2D keypoints and 3 for 3D keypoints. We use nearly the same architecture and adapt the stride, kernel size, and padding of 3D-conv and avg pool. The network was not learning at all, so we try different input shape, we added normalization of the keypoints coordinate.
+Our idea is to get rid of the heatmap to optimize the computation costs. Instead we use the 2D skeleton data as they are without any modifications to do the classification. This gives an input shape of (batch_size, #persons, #joints, #frames, #dimensions), #dimensions is two for 2D keypoints and three for 3D keypoints. We use nearly the same architecture and adapt the stride, kernel size, and padding of 3D-conv and avg pool. The network was not learning at all, so we try different input shape, we added normalization of the keypoints coordinate.
 
-Talk bout grayscale images with (batch_size, 1, 32, height, width)
+Talk about grayscale images with (batch_size, 1, 32, height, width) ?????????????????????????????????????
+
+We coded a data loader in the file dataset.py to load the 2D-skeleton (NTU60 HRNET). In train.py, we load the data, we instantiate and train our model. In inference.py, we predict the data using our best model. We coded functions to display the skeletons on the original video if provided, otherwise we display the skeletons on a black background. The five more probable predictions as well as the true value are plotted on the video. The two models we implemented are in the file c3d_modified.py. The file model.py contains the functions to train the model, evaluate the performance of the model with different metrics, and to do the prediction.
 
 ## Experimental Setup
 Here we will present the experiments we conducted and the evaluation metrics we use to quatify the results.
 ### Experiments
+First we run the model of the paper with the heatmaps in SCITAS. We obtained these metrics. 
+- Top-1 accuracy: 0.9253
+- Top-5 accuracy: 0.9944
+- Mean class accuracy: 0.9252
 
+Then we adapted the neural network architecture to feed the network with 2D skeletons keypoints instead of heatmaps. We tried different input shape. We adapted the the stride, kernel size, and padding of 3D-conv and avg pool in consequence.
+- (batch_size, #joints, #frames, #persons, #dimensions)
+- (batch_size, #persons, #joints, #frames, #dimensions)
+
+By changing the order of the two inputs, we thought that it has an effect on the conv3d, because for the first input shape, the conv3d will be applied on the (#frames, #persons, #dimensions) whereas for the  second one, the conv3d will be applied on the (#frames, #joints, #dimensions). The reason we changed the input shape, is that we thought that it was more relevant to put the #joints between #frames and #dimensions to apply the conv3d (it changes the neighborhood of each value).
+
+grayscale images ????????????????????????????????????????????????????????????????
 
 
 ### Evaluation metrics
+Since we made classification, we evaluate the model performance with top-1 accuracy, top-5 accuracy and mean class accuracy. Top-1 accuracy measures the percentage of correct predictions where the predicted class matches the true class. In other words, it calculates the accuracy of the model's most confident prediction. Top-5 accuracy is another evaluation metric used in classification tasks. It measures the percentage of correct predictions where the true class label is found within the top five predicted classes. In this case, the model's prediction does not need to be the most confident one, as long as the true class appears somewhere in the top five predictions. It allows for some flexibility in the predictions and accounts for situations where the model may not be certain about the exact class label. 
+
+MSE loss
+
 Accuracy, precision and recall, F1 score and confusion matrix.
 
 
 ## Dataset
-The dataset used for this project is called NTURGB+D and was developed by Shahroudy et al. (2016). It contains more than 56,000 video samples collected from 40 distinct subjects. This dataset contains 60 different action classes including daily, mutual, and health-related actions.
+The dataset used for this project is called NTU-RGB+D and was developed by Shahroudy et al. (2016). It contains more than 56,000 video samples collected from 40 distinct subjects. This dataset contains 60 different action classes including daily, mutual, and health-related actions.
 
-Since our project is about 2D Skeleton-based Action Recognition, we use a pre-processed 2D skeletons dataset provided by PYSKL. It is an annotated dataset
-- Original Dataset (Shahroudy et al., 2016): [NTU-RGB+D](https://arxiv.org/abs/1604.02808)
-- Pre-processed dataset (PYSKL): [NTU-RGB+D 2D SkeletonS download (pickle file)](https://download.openmmlab.com/mmaction/pyskl/data/nturgbd/ntu60_hrnet.pkl)
+Since our project is about Skeleton-based Action Recognition, we use a pre-processed 2D skeletons dataset provided by PYSKL.
+- Original Dataset (Shahroudy et al., 2016): &emsp; [NTU-RGB+D](https://arxiv.org/abs/1604.02808)
+- Pre-processed dataset (PYSKL):&emsp;&emsp;[NTU-RGB+D 2D SkeletonS download (pickle file)](https://download.openmmlab.com/mmaction/pyskl/data/nturgbd/ntu60_hrnet.pkl)
 
 <div id="wrapper" align="center">
 <figure>
@@ -52,10 +69,32 @@ The content of a pickle file is a dictionary with two fields: `split` and `annot
 
 
 ## Results
+When plotting the top1-accuracy and the loss, it is very clear that the 
+![loss_accuracy](https://github.com/inalbon/dlav_pyskl_2d_skeleton/assets/82947825/89489c91-6bc9-4ab8-94cc-c6503d92937b)
+
+![loss_accuracy_sanity_check](https://github.com/inalbon/dlav_pyskl_2d_skeleton/assets/82947825/b352be50-2edd-414a-9f87-5629e716a7ab)
+![confusion_matrix](https://github.com/inalbon/dlav_pyskl_2d_skeleton/assets/82947825/c4f02b5e-ac55-44b5-8ef0-efd2cd03b398)
+
+- heatmap weight summary: 3,389,472 params (batch_size= 50)
+Total params: 3,389,472
+Trainable params: 3,389,472
+Non-trainable params: 0
+Total mult-adds (G): 559.24
+==========================================================================================
+Input size (MB): 341.20
+Forward/backward pass size (MB): 5780.28
+Params size (MB): 13.56
+Estimated Total Size (MB): 6135.03
+
+- heatmap grayscale summary: 13,338 params (batch size = 50)
+- 2d skeleton summray: 
 
 
 
 ## Conclusion
+- ca a pris du temps run le code
+- c'était dur d'innover alors que tout les concepts étaient nouveaux de base (3dconv, GCN)
+- explorer grayscale heatmaps
 
 ## Installation
 ```shell
@@ -67,9 +106,6 @@ conda activate pyskl
 pip install -e .
 ```
 
-## Demo
-
-
 
 ## Training & Testing
 
@@ -80,6 +116,10 @@ bash
 # Testing
 bash 
 ```
+
+Link to the weights/checkpoints: 
+
+## Demo
 
 
 
