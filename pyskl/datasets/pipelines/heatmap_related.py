@@ -83,6 +83,7 @@ class GeneratePoseTarget:
         """
 
         sigma = self.sigma
+        print(arr.shape)
         img_h, img_w = arr.shape
 
         for center, max_value in zip(centers, max_values):
@@ -190,9 +191,9 @@ class GeneratePoseTarget:
         """
 
         if self.with_kp:
-            num_kp = kps.shape[1]
+            num_kp = 17
             for i in range(num_kp):
-                self.generate_a_heatmap(arr[i], kps[:, i], max_values[:, i])
+                self.generate_a_heatmap(arr[0], kps[:, i], max_values[:, i])
 
         if self.with_limb:
             for i, limb in enumerate(self.skeletons):
@@ -232,7 +233,7 @@ class GeneratePoseTarget:
         num_frame = kp_shape[1]
         num_c = 0
         if self.with_kp:
-            num_c += all_kps.shape[2]
+            num_c += 1
         if self.with_limb:
             num_c += len(self.skeletons)
         ret = np.zeros([num_frame, num_c, img_h, img_w], dtype=np.float32)

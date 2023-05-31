@@ -12,7 +12,7 @@ class NTU60_HRNET(Dataset):
             'val': 'xsub_val'
     }
     
-    def __init__(self, data_path, label_path, nb_pers_max, nb_frames, nb_joints, permute_order, phase):
+    def __init__(self, data_path, label_path, nb_pers_max, nb_frames, nb_joints, permute_order, phase, nb_samples=None):
 
       super(NTU60_HRNET, self).__init__()
       print('---------------------------- Loading data ---------------------------')
@@ -32,13 +32,12 @@ class NTU60_HRNET(Dataset):
       
       # Collect the data
       self.raw_data = pickle.load(open(data_path, "rb"))
-      print(self.raw_data.keys())
-      print(self.raw_data['split'].keys())
-      print(self.raw_data['annotations'][0].keys())
-      print(self.raw_data['annotations'][0]['keypoint'].shape)
-      print(self.raw_data['annotations'][0]['img_shape'])
- 
-      self.data_size = np.shape(self.raw_data["split"][self.phase_dict[self.phase]])
+
+      if nb_samples:
+        self.data_size = (nb_samples, )
+      else:
+        self.data_size = np.shape(self.raw_data["split"][self.phase_dict[self.phase]])
+      print(self.data_size)
       self.skeletons, self.labels, self.names = self.collect_data()
     
 
@@ -63,9 +62,9 @@ class NTU60_HRNET(Dataset):
         skeletons[i, :num_pers] = self.raw_data['annotations'][ind]['keypoint'][:, frames_indices]
         labels[i] = self.raw_data['annotations'][ind]['label']
         names.append(self.raw_data["split"][self.phase_dict[self.phase]][i])
-      fig, ax = plt.subplots()
-      ax.plot(list_total_frames)
-      plt.show()
+      # fig, ax = plt.subplots()
+      # ax.plot(list_total_frames)
+      # plt.show()
 
       print('indice of problematic case', np.argmin(skeletons[:, :, :, :, 0]), np.argmax(skeletons[:, :, :, :, 0]), np.argmin(skeletons[:, :, :, :, 1]), np.argmax(skeletons[:, :, :, :, 1]))
       print(skeletons[:, : , :, :, 0].shape)

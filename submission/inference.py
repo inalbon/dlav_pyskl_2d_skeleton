@@ -22,7 +22,7 @@ data_path = f'{os.getcwd()}/data/nturgbd/ntu60_hrnet.pkl'
 label_map_path = f'{os.getcwd()}/tools/data/label_map/nturgbd_120.txt'
 video_path = f'{os.getcwd()}/ntu_samples/'
 
-model_name = 'pjfd'
+model_name = 'jfpd'
 model_savepath = f'{os.getcwd()}/outputs/{model_name}/'
 
 if model_name == 'jfpd':
@@ -44,7 +44,20 @@ start = time.perf_counter()
 acc, full_outputs, full_labels, loss, full_names = TestModelDlav.predict(test_loader)
 stop = time.perf_counter()
 print(f'The prediction is done in {stop - start} seconds for {len(test_dataset)} predictions.')
+
 print(f"testing metrics : accuracy = {acc}  loss = {loss}")
 
-idx = 1243900
-TestModelDlav.show_prediction(test_dataset.skeletons[idx].cpu().numpy(), full_outputs[idx], full_labels[idx], full_names[idx], test_dataset.label_dict, model_savepath, video_path)
+find_flag = False
+for f in os.listdir(video_path):
+  videoname = f.split('.')[0].split('_')[0]
+  print(videoname)
+  for i in range(len(test_dataset)):
+    if test_dataset.names[i] == videoname:
+      idx=i
+      find_flag = True
+      print(idx)
+      break
+  if find_flag:
+    break
+
+TestModelDlav.show_prediction(test_dataset.skeletons[idx].cpu().numpy(), full_outputs[idx], full_labels[idx], full_names[idx], test_dataset.label_dict, permute_order, model_savepath, video_path)
