@@ -85,7 +85,7 @@ It is not relevant to show the other metrics we obtained with the model since it
 
 ## Conclusion
 
-In light of results we got with the network and particularly with sanity check of it, we can say that the network is not learning anything from the data. In order to tell if this is due to the network or to the nature of the data, we would have to check another architecture of network with the same input. What we also wanted to check was the sanity of the network when we input into it less data. To do that, we though about reducing the dimension represented by the number of joints to only one by creating the heatmap with only one layer with all the joints put on it. We began to do that at the end of the project but didn't had time to compute results. 
+In light of results we got with the network and particularly with sanity check of it, we can say that the network is not learning anything from the data. In order to tell if this is due to the network or to the nature of the data, we would have to check another architecture of network with the same input. What we also wanted to check was the sanity of the network when we input into it less data. To do that, we thought about reducing the dimension represented by the number of joints to only one by creating the heatmap with only one layer with all the joints put on it. We began to do that at the end of the project but didn't had time to compute results. 
 
 ## Installation
 ```shell
@@ -100,7 +100,7 @@ pip install -e .
 
 ## Training & Testing
 
-You can use following commands for training and predicting. Basically, we support distributed training on a single server with multiple GPUs.
+You can use following commands for training and predicting.
 ```shell
 # Training
 python submission/train.py
@@ -108,8 +108,7 @@ python submission/train.py
 python submission/inference.py
  
 ```
-
-Link to the weights/checkpoints: 
+Link to the weights : The weight are stored in the git at path /submission/weights
 
 
 ## Bibliography
