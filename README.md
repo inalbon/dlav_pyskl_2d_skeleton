@@ -70,6 +70,10 @@ The content of a pickle file is a dictionary with two fields: `split` and `annot
 
 ## Results
 When plotting the top1-accuracy and the loss, it is very clear that the 
+![loss_accuracy](https://github.com/inalbon/dlav_pyskl_2d_skeleton/assets/82947825/89489c91-6bc9-4ab8-94cc-c6503d92937b)
+
+![loss_accuracy_sanity_check](https://github.com/inalbon/dlav_pyskl_2d_skeleton/assets/82947825/b352be50-2edd-414a-9f87-5629e716a7ab)
+![confusion_matrix](https://github.com/inalbon/dlav_pyskl_2d_skeleton/assets/82947825/c4f02b5e-ac55-44b5-8ef0-efd2cd03b398)
 
 - heatmap weight summary: 3,389,472 params (batch_size= 50)
 Total params: 3,389,472
