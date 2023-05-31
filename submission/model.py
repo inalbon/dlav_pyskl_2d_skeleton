@@ -214,7 +214,7 @@ class Model():
                         continue
                     cv2.circle(img, tmp_skull, 5, color, -1)
 
-
+            cv2.putText(img,f'True value: {label_dict[label]}',(10,50), font, 1,(0,0,0),2,cv2.LINE_AA)
             cv2.putText(img,f'True value: {label_dict[label]}',(10,50), font, 1,(255,255,255),1,cv2.LINE_AA)
 
             for j in range(len(best_matchs)):
@@ -222,6 +222,7 @@ class Model():
                     color = (0,255,0)
                 else:
                     color = (0,0,255)
+                cv2.putText(img,f'Pred: {label_dict[best_matchs[j]]} : {round(output[best_matchs[j]], 2)}',(10,50*(j+2)), font, 1, (255,255,255),2,cv2.LINE_AA)
                 cv2.putText(img,f'Pred: {label_dict[best_matchs[j]]} : {round(output[best_matchs[j]], 2)}',(10,50*(j+2)), font, 1, color,1,cv2.LINE_AA)
 
             out.write(img)

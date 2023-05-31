@@ -22,7 +22,7 @@ data_path = f'{os.getcwd()}/data/nturgbd/ntu60_hrnet.pkl'
 label_map_path = f'{os.getcwd()}/tools/data/label_map/nturgbd_120.txt'
 video_path = f'{os.getcwd()}/ntu_samples/'
 
-model_name = 'jfpd'
+model_name = 'pjfd'
 model_savepath = f'{os.getcwd()}/outputs/{model_name}/'
 
 if model_name == 'jfpd':
