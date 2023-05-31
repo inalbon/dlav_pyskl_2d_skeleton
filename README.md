@@ -87,13 +87,6 @@ It is not relevant to show the other metrics we obtained with the model since it
 
 In light of results we got with the network and particularly with sanity check of it, we can say that the network is not learning anything from the data. In order to tell if this is due to the network or to the nature of the data, we would have to check another architecture of network with the same input. What we also wanted to check was the sanity of the network when we input into it less data. To do that, we though about reducing the dimension represented by the number of joints to only one by creating the heatmap with only one layer with all the joints put on it. We began to do that at the end of the project but didn't had time to had results. 
 
-
-
-au vu des résultats du sanity check, tester autre chose telq que grayscal images
-- ca a pris du temps run le code
-- c'était dur d'innover alors que tout les concepts étaient nouveaux de base (3dconv, GCN)
-- explorer grayscale heatmaps
-
 ## Installation
 ```shell
 git clone https://github.com/vita-student-projects/Group-58-Skeleton-based-Action-Recognition
