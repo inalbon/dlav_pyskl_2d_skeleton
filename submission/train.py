@@ -15,7 +15,7 @@ NUM_PERS_MAX = 2
 COORD_2D = 2
 NUM_JOINTS = 17
 
-batch_size = 50
+batch_size = 10
 num_epochs = 10
 
 data_path = f'{os.getcwd()}/data/nturgbd/ntu60_hrnet.pkl'
@@ -33,11 +33,12 @@ elif model_name == 'pjfd':
   model = C3dModifiedPersJointFrameDim()
   input_size = (batch_size, NUM_PERS_MAX, NUM_FRAMES_MIN, NUM_JOINTS, COORD_2D)
 
-train_dataset = NTU60_HRNET(data_path, label_map_path, NUM_PERS_MAX, NUM_FRAMES_MIN, NUM_JOINTS, permute_order, "train")
-val_dataset = NTU60_HRNET(data_path, label_map_path, NUM_PERS_MAX, NUM_FRAMES_MIN, NUM_JOINTS, permute_order, "val")
+train_dataset = NTU60_HRNET(data_path, label_map_path, NUM_PERS_MAX, NUM_FRAMES_MIN, NUM_JOINTS, permute_order, "train", 100)
+val_dataset = NTU60_HRNET(data_path, label_map_path, NUM_PERS_MAX, NUM_FRAMES_MIN, NUM_JOINTS, permute_order, "val", 100)
 
 train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
 val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=True)
+
 
 # Train model
 summary(model, input_size=input_size)
